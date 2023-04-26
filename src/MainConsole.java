@@ -1,17 +1,16 @@
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 
 public class MainConsole {
-    StringBuilder sb;
+    ArrayList<Place> placeList;
     public MainConsole() {
-        sb = new StringBuilder();
+        this.placeList = new ArrayList<>();
         this.readFile();
-        this.convertJsonToList();
     }
     
     public void readFile() {
@@ -22,26 +21,14 @@ public class MainConsole {
         }
     }
     public void tryReadFile() 
-            throws FileNotFoundException {
+            throws FileNotFoundException { 
+        FileReader fr = new FileReader("horgaszhelyek.json");
+        BufferedReader bf = new BufferedReader(fr);
+        Gson gson = new Gson();
+        Places data = gson.fromJson(bf, Places.class);
         
-        File file = new File("horgaszhelyek.json");
-        FileReader fr = new FileReader(file);
-        while() {
-            
+        for(Place place: data.fishingspots) {
+            this.placeList.add(place);
         }
-        // System.out.println(sb.toString());
-    }
-    public void convertJsonToList() {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        String lines = sb.toString();
-        lines = lines.replaceFirst("\\{", "");
-        lines = lines.replace("\"fishingspots\": [", "");
-        lines = lines.replace("]}", "");
-        
-        System.out.println(lines);
-        // Place[] placeArray = gson.fromJson(lines, Place[].class);
-        // System.out.println(placeArray[0].name);
-
     }
 }
